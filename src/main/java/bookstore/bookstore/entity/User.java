@@ -18,5 +18,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;  // Assuming an Enum named UserRole
 
+
+
     // ... getters, setters, constructors ...
 }

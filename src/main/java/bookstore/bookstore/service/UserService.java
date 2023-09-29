@@ -17,8 +17,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElse(null);
+    public User findUserByUsername(String email) {
+//         userRepository.findByUsername(username).orElse(null);
+      return userRepository.findByEmail(email);
     }
 
     // Add more methods based on your requirements, e.g. updateUser, deleteUser, etc.

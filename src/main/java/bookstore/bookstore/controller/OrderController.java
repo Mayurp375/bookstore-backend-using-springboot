@@ -18,6 +18,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    //http://localhost:8080/api/orders/place
     @PostMapping("/place")
     public ResponseEntity<Order> placeOrder(@RequestParam Long userId) {
         return new ResponseEntity<>(orderService.placeOrder(userId), HttpStatus.CREATED);

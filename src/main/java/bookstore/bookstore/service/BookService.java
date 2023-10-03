@@ -6,6 +6,7 @@ import bookstore.bookstore.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,6 +29,10 @@ public class BookService {
 
     public Optional<Book> findById(Long bookId) {
         return bookRepository.findById(bookId);
+    }
+
+    public List<Book> getAll() {
+        return bookRepository.findAll();
     }
 
 

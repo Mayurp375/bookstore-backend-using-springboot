@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -40,6 +41,12 @@ public class BookController {
         } else {
             return ResponseEntity.notFound().build();  // 404 Not Found
         }
+    }
+
+    //http://localhost:8080/api/books/allBookd
+    @GetMapping("allBookd")
+    public ResponseEntity<List<Book>> getAllBooks(){
+        return new ResponseEntity<>(bookService.getAll(),HttpStatus.CREATED);
     }
 
     // ... Similarly, endpoints for update, delete, and fetch all books ...

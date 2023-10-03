@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Component
 public class JWTToken {
-    private final String SECRET = "Sourabh";
+    private final String SECRET = "MAyur";
     // Token expiration time in milliseconds (e.g., 1 hour)
     private final long EXPIRATION_TIME = 100000; // 1 hour in milliseconds
 
@@ -19,7 +19,7 @@ public class JWTToken {
     public String createToken(long id) {
         String token;
         token = JWT.create()
-                .withClaim("id", id).withExpiresAt(expiresAt)
+                .withClaim("userId", id).withExpiresAt(expiresAt)
                 .sign(Algorithm.HMAC256(SECRET));
         return token;
     }

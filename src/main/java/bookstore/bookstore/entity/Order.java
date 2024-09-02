@@ -1,5 +1,6 @@
 package bookstore.bookstore.entity;
 
+import bookstore.bookstore.entity.role.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 @Entity
@@ -28,6 +28,8 @@ public class Order {
 
     private LocalDateTime orderDate;
     private Double totalAmount;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
 
     public Order(User user) {
         this.user=user;

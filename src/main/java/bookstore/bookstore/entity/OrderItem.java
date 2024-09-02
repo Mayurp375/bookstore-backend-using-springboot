@@ -22,11 +22,11 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "book_id")
-    private Book book;
+    private Medicine book;
     
     private Integer quantity;
 
-    public OrderItem(Book book, Integer quantity) {
+    public OrderItem(Medicine book, Integer quantity) {
         this.book=book;
         this.quantity=quantity;
     }

@@ -21,24 +21,24 @@ public class CartItem {
     private Cart cart;
 
     @ManyToOne
-    @JoinColumn(name = "book_id")
-    private Book book;
+    @JoinColumn(name = "medicine_id")
+    private Medicine medicine;
     
     private Integer quantity;
 
-    public CartItem(Cart cart, Book book) {
+    public CartItem(Cart cart, Medicine medicine) {
         this.cart = cart;
-        this.book = book;
+        this.medicine = medicine;
     }
 
 
-    public CartItem(Long id, Book book) {
+    public CartItem(Long id, Medicine medicine) {
         this.id = id;
-        this.book = book;
+        this.medicine = medicine;
     }
 
-    public CartItem(Book book, int quantity) {
-        this.book=book;
+    public CartItem(Medicine book, int quantity) {
+        this.medicine=book;
         this.quantity=quantity;
     }
 }

@@ -1,10 +1,13 @@
 package bookstore.bookstore.entity;
 
+import bookstore.bookstore.entity.dto.OrderDto;
+import bookstore.bookstore.entity.dto.OrderItemDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "order_items")
@@ -22,16 +25,9 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "book_id")
-    private Medicine book;
+    private Medicine medicine;
     
     private Integer quantity;
 
-    public OrderItem(Medicine book, Integer quantity) {
-        this.book=book;
-        this.quantity=quantity;
-    }
-
-
-
-    // ... getters, setters, constructors ...
+// ... getters, setters, constructors ...
 }

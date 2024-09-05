@@ -1,14 +1,16 @@
 package bookstore.bookstore.entity.dto;
 
-import bookstore.bookstore.entity.Medicine;
-import bookstore.bookstore.entity.User;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class OrderDto {
-    private String authToken;
-    private Integer amount;
-    private List<Long> medicineId;
+    private List<OrderItemDto> items;
+    private LocalDateTime orderDate = LocalDateTime.now();
+    private Double totalAmount;
+    private String address;
+    private String token;
 }

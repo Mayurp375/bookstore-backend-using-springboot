@@ -4,6 +4,9 @@ package bookstore.bookstore.controller;
 import bookstore.bookstore.entity.Order;
 import bookstore.bookstore.entity.dto.OrderDto;
 import bookstore.bookstore.service.OrderService;
+import bookstore.bookstore.util.response.ApiResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +28,9 @@ public class OrderController {
 
     //http://localhost:8080/api/orders/place
     @PostMapping("/place")
-    public ResponseEntity<Order> placeOrder(@RequestBody OrderDto orderDto, WebRequest request) {
-        orderDto.setAuthToken(request.getHeader(HttpHeaders.AUTHORIZATION));
-        return new ResponseEntity<>(orderService.placeOrder(orderDto), HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse> placeOrder(@RequestBody OrderDto orderDto, WebRequest request) {
+        orderDto.setToken(request.getHeader(HttpHeaders.AUTHORIZATION));
+        return ResponseEntity.ok(orderService.placeOrder(orderDto));
     }
 
     @GetMapping("/history/{userId}")

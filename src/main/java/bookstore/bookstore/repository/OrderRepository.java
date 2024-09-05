@@ -10,4 +10,5 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     // Fetch orders specific to a user.
     List<Order> findByUser(User user);
+    Order findFirstByUser(User user);
 }

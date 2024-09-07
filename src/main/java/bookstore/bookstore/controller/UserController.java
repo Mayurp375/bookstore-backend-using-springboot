@@ -56,7 +56,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
-        final String token = jwtTokenUtil.createToken(fetchedUser.getId());
+        final String token = jwtTokenUtil.createToken(fetchedUser);
         response.put(AppConstant.MESSAGE, MessageConstant.LOGIN_SUCCESSFUL);
         response.put(AppConstant.TOKEN, token);
         return ResponseEntity.ok(response);

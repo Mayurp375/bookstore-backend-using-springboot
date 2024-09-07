@@ -1,43 +1,47 @@
 package bookstore.bookstore.entity;
 
-import bookstore.bookstore.entity.dto.OrderDto;
 import bookstore.bookstore.entity.role.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
 @Data
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @OneToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> items;
-
-    private LocalDateTime orderDate;
-    private Double totalAmount;
-    @Enumerated(EnumType.STRING)
+    private Date orderDate;
+    private BigDecimal totalAmount;
+    private String status;
     private OrderStatus orderStatus;
 
-    public Order() {
-    }
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<OrderItem> orderItems;
 
-    public Order(OrderDto orderDto, OrderStatus orderStatus, User user, ArrayList<OrderItem> orderItems) {
-        this.user = user;
-        this.items =  orderItems;
-        this.orderDate = orderDto.getOrderDate();
-        this.totalAmount = orderDto.getTotalAmount();
-        this.orderStatus = orderStatus;
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", user=" + user.getUsername() + // Avoid calling toString() on user
+                ", orderDate=" + orderDate +
+                ", totalAmount=" + totalAmount +
+                ", status='" + status + '\'' +
+                ", orderStatus=" + orderStatus +
+                ", orderItemsCount=" + orderItems.size() + // Use size() instead of toString()
+                '}';
     }
-
+// Add other order attributes (e.g., order date, status)
 }

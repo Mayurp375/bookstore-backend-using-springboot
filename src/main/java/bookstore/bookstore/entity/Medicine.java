@@ -5,18 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "medicine")
-@Data
 @NoArgsConstructor
+@Data
 public class Medicine {
-
-//"name":"psychology of money",
-//        "price":"100",
-//        "category":"Fiction",
-//        "image":"https://images-eu.ssl-images-amazon.com/images/I/71g2ednj0JL._AC_UL200_SR200,200_.jpg"
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

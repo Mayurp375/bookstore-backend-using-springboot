@@ -1,20 +1,15 @@
 package bookstore.bookstore.entity;
 
-import bookstore.bookstore.entity.dto.OrderDto;
-import bookstore.bookstore.entity.dto.OrderItemDto;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_items")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class OrderItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,11 +18,12 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne
-    @JoinColumn(name = "book_id")
+    @ManyToOne()
+    @JoinColumn(name = "medicine_id")
     private Medicine medicine;
-    
-    private Integer quantity;
 
-// ... getters, setters, constructors ...
+    private Integer quantity;
+    private BigDecimal price;
+
+// Add other order item attributes (e.g., price, discount)
 }

@@ -1,13 +1,16 @@
 package bookstore.bookstore.entity;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_items")
-@Data
+@Getter
+@Setter
 public class OrderItem {
 
     @Id
@@ -16,6 +19,7 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonBackReference
     private Order order;
 
     @ManyToOne()
@@ -24,6 +28,5 @@ public class OrderItem {
 
     private Integer quantity;
     private BigDecimal price;
-
 // Add other order item attributes (e.g., price, discount)
 }

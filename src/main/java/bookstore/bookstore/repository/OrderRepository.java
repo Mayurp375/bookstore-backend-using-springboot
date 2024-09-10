@@ -4,6 +4,7 @@ import bookstore.bookstore.entity.Order;
 import bookstore.bookstore.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -20,7 +21,18 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Transactional
     void updateOrderDetails(String message, String status, User userId, Long orderId);
 
-    Order findFirstByUser(User user);
-
     List<Order> findAllByUser(User user);
+
+    @Query("SELECT o FROM Order o JOIN FETCH o.orderItems WHERE o.id = :orderId")
+    Order findByIdWithOrderItems(@Param("orderId") Long orderId);
+
+//    @Query(value = "select * from orders where id = ?1", nativeQuery = true)
+//    List<Order> findByOrderId(Long orderId);
+
+    @Query(value = "select * from orders o \n" +
+            "INNER join users u on o.user_id = u.id \n" +
+            "INNER join order_items oi  on oi.order_id = o.id \n" +
+            "INNER join medicine m on m.id = oi.medicine_id \n" +
+            "where u.id = ?1", nativeQuery = true)
+    List<Order> findByOrderId(Long orderId);
 }

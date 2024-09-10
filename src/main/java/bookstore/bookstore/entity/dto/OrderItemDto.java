@@ -2,8 +2,17 @@ package bookstore.bookstore.entity.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class OrderItemDto {
-    private MedicineDto medicineDto;
-    private Integer quantity;
+    private String address;
+    private Integer totalAmount;
+    private List<ItemsDto> itemsDtoList;
+
+    @Data
+    public static class ItemsDto {
+        private Long medicineId;
+        private Integer quantity;
+    }
 }

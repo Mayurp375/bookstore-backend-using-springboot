@@ -1,6 +1,7 @@
 package bookstore.bookstore.entity;
 
 import bookstore.bookstore.entity.dto.MedicineDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +20,9 @@ public class Medicine {
     private Double price;
     private String category;
     private String image;
-
+    @OneToMany(mappedBy = "medicine")
+    @JsonIgnore
+    private List<OrderItem> orderItems;
     public Medicine(MedicineDto medicineDto) {
         this.name = medicineDto.getName();
         this.price = medicineDto.getPrice();

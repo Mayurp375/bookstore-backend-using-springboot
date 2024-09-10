@@ -3,9 +3,7 @@ package bookstore.bookstore.entity;
 import bookstore.bookstore.entity.dto.RegisterDto;
 import bookstore.bookstore.entity.role.UserRole;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,8 +11,8 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-@ToString
-@Data
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +22,8 @@ public class User {
     private String email;
     @Enumerated(EnumType.STRING)
     private UserRole role;  // Assuming an Enum named UserRole
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-//    @JsonManagedReference
-//    private List<Order> orders;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Order> orders;
 
     public User(RegisterDto dto) {
         this.username = dto.getUsername();

@@ -2,16 +2,23 @@ package bookstore.bookstore.entity;
 
 import bookstore.bookstore.entity.role.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
-@Data
+@Getter
+@Setter
 public class Order {
 
     @Id
@@ -23,25 +30,15 @@ public class Order {
     @JsonIgnore
     private User user;
 
-    private Date orderDate;
+    private String orderDate;
     private BigDecimal totalAmount;
     private String status;
     private OrderStatus orderStatus;
+    private String address;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<OrderItem> orderItems;
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", user=" + user.getUsername() + // Avoid calling toString() on user
-                ", orderDate=" + orderDate +
-                ", totalAmount=" + totalAmount +
-                ", status='" + status + '\'' +
-                ", orderStatus=" + orderStatus +
-                ", orderItemsCount=" + orderItems.size() + // Use size() instead of toString()
-                '}';
-    }
 // Add other order attributes (e.g., order date, status)
 }

@@ -49,7 +49,7 @@ public class MedicineController {
         }
     }
 
-    //http://localhost:8080/api/medicines/allMedicine
+    //http://localhost:8080/api/medicine/allMedicine
     @GetMapping("allMedicine")
     public ResponseEntity<?> getAllMedicines(){
         Map map = new HashMap<>();

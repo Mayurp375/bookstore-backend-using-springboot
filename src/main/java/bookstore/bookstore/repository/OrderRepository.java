@@ -3,6 +3,7 @@ package bookstore.bookstore.repository;
 import bookstore.bookstore.entity.Order;
 import bookstore.bookstore.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -17,9 +18,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(value = "select * from orders where user_id = ?1", nativeQuery = true)
     List<Order> findByUser(User user);
 
-    @Query(value = "UPDATE orders SET message = ?1, orderStatus = ?2,user = ?3, WHERE id =?4", nativeQuery = true)
+    @Modifying
+    @Query(value = "UPDATE orders SET message = ?1, order_status = ?2, user_id = ?3 WHERE id = ?4", nativeQuery = true)
     @Transactional
-    void updateOrderDetails(String message, String status, User userId, Long orderId);
+    void updateOrderDetails(String message, String status, Long userId, Long orderId);
 
     List<Order> findAllByUser(User user);
 
@@ -30,9 +32,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 //    List<Order> findByOrderId(Long orderId);
 
     @Query(value = "select * from orders o \n" +
-            "INNER join users u on o.user_id = u.id \n" +
-            "INNER join order_items oi  on oi.order_id = o.id \n" +
-            "INNER join medicine m on m.id = oi.medicine_id \n" +
-            "where u.id = ?1", nativeQuery = true)
+//            "INNER join users u on o.user_id = u.id \n" +
+//            "INNER join order_items oi  on oi.order_id = o.id \n" +
+//            "INNER join medicine m on m.id = oi.medicine_id \n" +
+            "where o.id = ?1", nativeQuery = true)
     List<Order> findByOrderId(Long orderId);
 }

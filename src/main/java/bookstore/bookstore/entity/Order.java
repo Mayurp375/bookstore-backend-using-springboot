@@ -30,11 +30,23 @@ public class Order {
     @JsonIgnore
     private User user;
 
+    @Column(name = "order_date")
     private String orderDate;
+
     private BigDecimal totalAmount;
+
+    @Column(name = "status")
     private String status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "order_status")
     private OrderStatus orderStatus;
+
+    @Column(name = "address")
     private String address;
+
+    @Column(name = "message")
+    private String message;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonManagedReference

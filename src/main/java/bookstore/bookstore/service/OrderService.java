@@ -92,7 +92,7 @@ public class OrderService {
         if (user == null) {
             throw new UserNotFound(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase(), "User not found");
         }
-        orderRepository.updateOrderDetails(orderStatus.getMessage(), orderStatus.getStatus(), user, orderStatus.getOrderId());
+        orderRepository.updateOrderDetails(orderStatus.getMessage(), orderStatus.getStatus(), user.getId(), orderStatus.getOrderId());
         return new ApiResponse(HttpStatus.OK.value(), AppConstant.SUCCESS, "Update successfully");
     }
 }

@@ -1,15 +1,14 @@
 package bookstore.bookstore.controller;
 import bookstore.bookstore.entity.Medicine;
 import bookstore.bookstore.entity.dto.MedicineDto;
-import bookstore.bookstore.service.MedicineService;
+import bookstore.bookstore.service.MedicineServiceImpl;
+import bookstore.bookstore.service.interfaces.MedicineService;
 import bookstore.bookstore.util.constant.AppConstant;
-import bookstore.bookstore.util.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -19,6 +18,7 @@ import java.util.Optional;
 @CrossOrigin("http://localhost:4200/")
 public class MedicineController {
     private final MedicineService medicineService;
+
     public MedicineController(MedicineService medicineService) {
         this.medicineService = medicineService;
     }

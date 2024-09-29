@@ -11,5 +11,7 @@ public class UpdateOrderStatus {
     @Enumerated(EnumType.STRING)
     private String status;
     private String message;
+    private Long sellerId;
     private Long userId;
+
 }

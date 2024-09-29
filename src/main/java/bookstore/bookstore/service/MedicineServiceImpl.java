@@ -4,17 +4,18 @@ package bookstore.bookstore.service;
 import bookstore.bookstore.entity.Medicine;
 import bookstore.bookstore.entity.dto.MedicineDto;
 import bookstore.bookstore.repository.MedicineRepository;
+import bookstore.bookstore.service.interfaces.MedicineService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MedicineService {
+public class MedicineServiceImpl implements MedicineService {
 
     private final MedicineRepository medicineRepository;
 
-    public MedicineService(MedicineRepository medicineRepository) {
+    public MedicineServiceImpl(MedicineRepository medicineRepository) {
         this.medicineRepository = medicineRepository;
     }
 

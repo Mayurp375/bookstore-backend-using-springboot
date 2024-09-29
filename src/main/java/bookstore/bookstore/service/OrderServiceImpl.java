@@ -6,32 +6,38 @@ import bookstore.bookstore.entity.OrderItem;
 import bookstore.bookstore.entity.User;
 import bookstore.bookstore.entity.dto.OrderItemDto;
 import bookstore.bookstore.entity.dto.UpdateOrderStatus;
+import bookstore.bookstore.entity.role.OrderStatus;
 import bookstore.bookstore.exceptions.AuthTokenExpiredException;
 import bookstore.bookstore.exceptions.UserNotFound;
 import bookstore.bookstore.repository.MedicineRepository;
 import bookstore.bookstore.repository.OrderRepository;
 import bookstore.bookstore.repository.UserRepository;
+import bookstore.bookstore.service.interfaces.OrderService;
 import bookstore.bookstore.util.JWTToken;
 import bookstore.bookstore.util.constant.AppConstant;
 import bookstore.bookstore.util.date.DateUtil;
 import bookstore.bookstore.util.response.ApiResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.*;
 
 @Service
-public class OrderService {
+public class OrderServiceImpl implements OrderService {
 
+    private static final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
     private final OrderRepository orderRepository;
     private final MedicineRepository medicineRepository;
     private final UserRepository userRepository;
     private final JWTToken jwtToken;
 
-    public OrderService(OrderRepository orderRepository,
-                        UserRepository userRepository,
-                        JWTToken jwtToken, MedicineRepository medicineRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository,
+                            UserRepository userRepository,
+                            JWTToken jwtToken, MedicineRepository medicineRepository) {
         this.orderRepository = orderRepository;
 
         this.userRepository = userRepository;
@@ -43,22 +49,29 @@ public class OrderService {
         User user = userRepository.findById(userId).orElseThrow(() ->
          new AuthTokenExpiredException(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase(), "User not found")
         );
-        Order order = new Order();
-        order.setUser(user);
-        order.setOrderDate(DateUtil.currentDate());
-        order.setAddress(orderItemsDTO.getAddress());
-        List<OrderItem> orderItems = new ArrayList<>();
-        for (OrderItemDto.ItemsDto dto : orderItemsDTO.getItemsDtoList()) {
-            Medicine medicine = medicineRepository.findById(dto.getMedicineId()).orElseThrow(() -> new RuntimeException("Medicine not found"));
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrder(order);
-            orderItem.setMedicine(medicine);
-            orderItem.setQuantity(dto.getQuantity());
-            orderItem.setPrice(BigDecimal.valueOf(orderItemsDTO.getTotalAmount()));
-            orderItems.add(orderItem);
+        try{
+            Order order = new Order();
+            order.setUser(user);
+            order.setOrderDate(DateUtil.currentDate());
+            order.setAddress(orderItemsDTO.getAddress());
+            order.setContact(orderItemsDTO.getContact());
+            List<OrderItem> orderItems = new ArrayList<>();
+            for (OrderItemDto.ItemsDto dto : orderItemsDTO.getItemsDtoList()) {
+                Medicine medicine = medicineRepository.findById(dto.getMedicineId()).orElseThrow(() -> new RuntimeException("Medicine not found"));
+                OrderItem orderItem = new OrderItem();
+                orderItem.setOrder(order);
+                orderItem.setMedicine(medicine);
+                orderItem.setQuantity(dto.getQuantity());
+                orderItem.setPrice(BigDecimal.valueOf(orderItemsDTO.getTotalAmount()));
+                orderItems.add(orderItem);
+            }
+            order.setOrderStatus(OrderStatus.RECEIVED_BY_SELLER);
+            //need change when order exicute need to get notify for seller order is came plz approve or reject and upldate status
+            order.setOrderItems(orderItems);
+            orderRepository.save(order);
+        }catch (Exception e){
+            log.error(e.getMessage());
         }
-        order.setOrderItems(orderItems);
-        orderRepository.save(order);
     }
 
     public Order getOrder(Long orderId) {
@@ -88,11 +101,11 @@ public class OrderService {
     }
 
     public ApiResponse updateOrderStatus(UpdateOrderStatus orderStatus) {
-        User user = userRepository.findById(orderStatus.getUserId()).orElse(null);
+        User user = userRepository.findById(orderStatus.getSellerId()).orElse(null);
         if (user == null) {
             throw new UserNotFound(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase(), "User not found");
         }
-        orderRepository.updateOrderDetails(orderStatus.getMessage(), orderStatus.getStatus(), user.getId(), orderStatus.getOrderId());
+        orderRepository.updateOrderDetails(orderStatus.getMessage(), orderStatus.getStatus(), orderStatus.getUserId(), orderStatus.getOrderId());
         return new ApiResponse(HttpStatus.OK.value(), AppConstant.SUCCESS, "Update successfully");
     }
 }

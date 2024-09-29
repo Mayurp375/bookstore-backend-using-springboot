@@ -8,6 +8,7 @@ import java.util.List;
 public class OrderItemDto {
     private String address;
     private Integer totalAmount;
+    private Integer contact;
     private List<ItemsDto> itemsDtoList;
 
     @Data

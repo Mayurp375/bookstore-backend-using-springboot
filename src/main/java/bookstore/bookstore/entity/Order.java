@@ -45,6 +45,9 @@ public class Order {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "contact")
+    private Integer contact;
+
     @Column(name = "message")
     private String message;
 

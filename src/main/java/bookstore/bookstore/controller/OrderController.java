@@ -4,8 +4,9 @@ package bookstore.bookstore.controller;
 import bookstore.bookstore.entity.Order;
 import bookstore.bookstore.entity.dto.OrderItemDto;
 import bookstore.bookstore.entity.dto.UpdateOrderStatus;
-import bookstore.bookstore.service.OrderService;
+import bookstore.bookstore.service.interfaces.OrderService;
 import bookstore.bookstore.util.JWTToken;
+import bookstore.bookstore.util.constant.AppConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,13 +33,19 @@ public class OrderController {
 
     //http://localhost:8080/api/orders/place
     @PostMapping("/place")
-    public ResponseEntity<String> createOrder(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody OrderItemDto orderItemsDTO) {
+    public ResponseEntity<?> createOrder(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody OrderItemDto orderItemsDTO) {
+        log.info("request : {}",orderItemsDTO);
+        Map<String,Object> map = new HashMap<>();
+        map.put(AppConstant.CODE,HttpStatus.OK.value());
+        map.put(AppConstant.STATUS,AppConstant.SUCCESS);
         try {
             Long userId = jwtToken.decodeToken(token);
             orderService.createOrder(userId, orderItemsDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Order created successfully");
+            map.put(AppConstant.DATA,"Order created successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(map);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error creating order: " + e.getMessage());
+            map.put(AppConstant.DATA,"Error creating order: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
         }
     }
 
@@ -77,7 +84,7 @@ public class OrderController {
 
     @GetMapping("/updateOrderStatus")
     public ResponseEntity<?> updateOrderStatus(@RequestBody UpdateOrderStatus orderStatus,@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        orderStatus.setUserId(jwtToken.getUser(token));
+        orderStatus.setSellerId(jwtToken.getUser(token));
         return new ResponseEntity<>(orderService.updateOrderStatus(orderStatus), HttpStatus.OK);
     }
 }
